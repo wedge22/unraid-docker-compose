@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  emulatorjs:
+    image: lscr.io/linuxserver/emulatorjs:latest
+    container_name: emulatorjs
+    ports:
+      - "3000:3000"   # Update with your actual port mappings
+      - "380:80"
+      - "4001:4001"
+    volumes:
+      - /mnt/user/appdata/emulatorjs:/config  # Update with your actual volume mappings
+      - /mnt/user/media/Roms:/data                       # Example volume for games
+    environment:
+      - PUID=99         # Update with your actual user ID
+      - PGID=100         # Update with your actual group ID
+      - TZ=America/Los_Angeles  # Set your timezone
+    restart: unless-stopped
