@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"  # Change this port if needed
+    volumes:
+      - /mnt/user/appdata/uptime-kuma:/app/data  # Persist data
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Docker socket for monitoring Docker, read-only
+    environment:
+      - TZ=America/Los_Angeles  # Update with your timezone
+    networks:
+      - internal_network  # Use the internal network or specify another if needed
+    restart: unless-stopped
+
+networks:
+  internal_network:
+    external: true  # Use the existing internal network
