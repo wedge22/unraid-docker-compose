@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: otel-collector
+    user: "1000:100"
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /mnt/user/appdata/otel-collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    command: ["--config", "/etc/otel-collector-config.yaml"]
+    restart: unless-stopped
+    ports:
+      - "4317:4317"  # OpenTelemetry gRPC (OTLP) receiver
+      - "55680:55680"  # OpenTelemetry HTTP (OTLP) receiver
+    networks:
+      - internal_network  # Update to the desired network (jarvis or internal_network)
+    environment:
+      - SPLUNK_HEC_URL=${SPLUNK_HEC_URL}  # Moved to .env file
+      - SPLUNK_HEC_TOKEN=${SPLUNK_HEC_TOKEN}  # Moved to .env file
+
+networks:
+  internal_network:
+    external: true  # Ensure it uses the correct network (replace jarvis if needed)
