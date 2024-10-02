@@ -14,7 +14,7 @@ services:
     environment:
       - PUID=99         # Update with your actual user ID
       - PGID=100         # Update with your actual group ID
-      - TZ=America/Los_Angeles  # Set your timezone
+      - TZ=America/Vancouver  # Set your timezone
     networks:
       - internal_network
     restart: unless-stopped
