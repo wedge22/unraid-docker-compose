@@ -10,7 +10,7 @@ services:
       - /mnt/user/appdata/uptime-kuma:/app/data  # Persist data
       - /var/run/docker.sock:/var/run/docker.sock:ro  # Docker socket for monitoring Docker, read-only
     environment:
-      - TZ=America/Los_Angeles  # Update with your timezone
+      - TZ=America/Vancouver  # Update with your timezone
     networks:
       - internal_network  # Use the internal network or specify another if needed
     restart: unless-stopped
