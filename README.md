@@ -43,7 +43,7 @@ Before getting started, ensure you have the following:
 
    ```bash
    git clone https://github.com/wedge22/unraid-docker-compose.git
-   cd your-repo-name
+   cd unraid-docker-compose
    ```
 
 2. **Customize `.env` File (Optional)**
