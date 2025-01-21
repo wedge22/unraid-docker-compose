@@ -4,39 +4,39 @@ services:
   backup:
     image: mazzolino/restic
     container_name: restic
-    hostname: your_host_name
+    hostname: restic_backup
     environment:
-      RUN_ON_STARTUP: "true" #change as you wish
-      BACKUP_CRON: "0 */12 * * *" #this is twice daily, i.e., every 12 hours
+      RUN_ON_STARTUP: "true"
+      BACKUP_CRON: "0 */12 * * *" # Twice daily, every 12 hours
       RESTIC_REPOSITORY: /restic
-      RESTIC_PASSWORD: MY_SUPER_LONG_PASSWORD
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       RESTIC_BACKUP_SOURCES: /mnt/volumes
-      RESTIC_COMPRESSION: auto 
+      RESTIC_COMPRESSION: auto
       RESTIC_BACKUP_ARGS: >-
-        --tag restic-docker-appdata #add tags, whatever you need to mark backups
+        --tag restic-docker-appdata # Add tags, whatever you need to mark backups
         --verbose
-      RESTIC_FORGET_ARGS: >- #change as required
+      RESTIC_FORGET_ARGS: >-
         --keep-last 10
         --keep-daily 7
         --keep-weekly 5
         --keep-monthly 12
       TZ: America/Vancouver
     volumes:
-      - /home/ubuntu/truenas/Restic-Proxmox-Backup:/restic #change the left hand side to where you want to store the backups. As you can see I'm storing it on my NAS that is mounted to the host /home/truenas
-      - /home/ubuntu/truenas/Restic-Proxmox-Backup/tmp-for-restore:/tmp-for-restore #USE THIS FOLDER FOR RESTORE - CAN VIEW EACH CONTAINER
-      - /home/ubuntu/docker:/mnt/volumes:ro
+      - /mnt/user/backups:/restic # Store backups in the new backups share
+      - /mnt/user/backups/tmp-for-restore:/tmp-for-restore # Folder for restores
+      - /mnt/user/appdata/docker:/mnt/volumes:ro # Read-only mount for Docker data
     security_opt:
       - no-new-privileges:true
 
   prune:
     image: mazzolino/restic
     container_name: restic-prune
-    hostname: your_host_name
+    hostname: restic_backup
     environment:
       RUN_ON_STARTUP: "true"
       PRUNE_CRON: "0 0 4 * * *"
       RESTIC_REPOSITORY: /restic
-      RESTIC_PASSWORD: USE_SAME_PASSWORD_AS_ABOVE
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       TZ: America/Vancouver
     security_opt:
       - no-new-privileges:true
@@ -44,14 +44,14 @@ services:
   check:
     image: mazzolino/restic
     container_name: restic-check
-    hostname: your_host_name
+    hostname: restic_backup
     environment:
       RUN_ON_STARTUP: "false"
       CHECK_CRON: "0 15 5 * * *"
       RESTIC_CHECK_ARGS: >-
         --read-data-subset=10%
       RESTIC_REPOSITORY: /restic
-      RESTIC_PASSWORD: USE_SAME_PASSWORD_AS_ABOVE
+      RESTIC_PASSWORD: ${RESTIC_PASSWORD}
       TZ: America/Vancouver
     security_opt:
       - no-new-privileges:true
