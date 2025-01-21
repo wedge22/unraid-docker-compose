@@ -1,2 +1,5 @@
 secrets.txt
 .env
+*.pem
+*.key
+secrets.yaml
