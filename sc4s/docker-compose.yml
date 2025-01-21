@@ -14,9 +14,9 @@ services:
       - "601:601/tcp"
       - "6514:6514/tcp"
     environment:
-      - PUID = 99
-      - PGID = 100
-      - TZ = America/Vancouver
+      - PUID=99
+      - PGID=100
+      - TZ=America/Vancouver
       - SC4S_DEST_SPLUNK_HEC_DEFAULT_URL=${SC4S_DEST_SPLUNK_HEC_DEFAULT_URL}
       - SC4S_DEST_SPLUNK_HEC_DEFAULT_TOKEN=${SC4S_DEST_SPLUNK_HEC_DEFAULT_TOKEN}
     volumes:

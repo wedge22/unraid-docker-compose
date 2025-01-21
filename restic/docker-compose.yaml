@@ -13,14 +13,14 @@ services:
       RESTIC_BACKUP_SOURCES: /mnt/volumes
       RESTIC_COMPRESSION: auto 
       RESTIC_BACKUP_ARGS: >-
-        --tag restic-proxmox #add tags, whatever you need to mark backups
+        --tag restic-docker-appdata #add tags, whatever you need to mark backups
         --verbose
       RESTIC_FORGET_ARGS: >- #change as required
         --keep-last 10
         --keep-daily 7
         --keep-weekly 5
         --keep-monthly 12
-      TZ: Europe/London
+      TZ: America/Vancouver
     volumes:
       - /home/ubuntu/truenas/Restic-Proxmox-Backup:/restic #change the left hand side to where you want to store the backups. As you can see I'm storing it on my NAS that is mounted to the host /home/truenas
       - /home/ubuntu/truenas/Restic-Proxmox-Backup/tmp-for-restore:/tmp-for-restore #USE THIS FOLDER FOR RESTORE - CAN VIEW EACH CONTAINER
@@ -37,7 +37,7 @@ services:
       PRUNE_CRON: "0 0 4 * * *"
       RESTIC_REPOSITORY: /restic
       RESTIC_PASSWORD: USE_SAME_PASSWORD_AS_ABOVE
-      TZ: Europe/London
+      TZ: America/Vancouver
     security_opt:
       - no-new-privileges:true
 
@@ -52,6 +52,6 @@ services:
         --read-data-subset=10%
       RESTIC_REPOSITORY: /restic
       RESTIC_PASSWORD: USE_SAME_PASSWORD_AS_ABOVE
-      TZ: Europe/London
+      TZ: America/Vancouver
     security_opt:
       - no-new-privileges:true
