@@ -25,6 +25,7 @@ services:
       - /mnt/user/backups:/restic # Store backups in the new backups share
       - /mnt/user/backups/tmp-for-restore:/tmp-for-restore # Folder for restores
       - /mnt/user/appdata/docker:/mnt/volumes:ro # Read-only mount for Docker data
+      - /mnt/user/appdata/minecraft:/mnt/volumes # using minecraft for testing
     security_opt:
       - no-new-privileges:true
 
