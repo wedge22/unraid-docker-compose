@@ -15,19 +15,22 @@ services:
       RESTIC_BACKUP_ARGS: >-
         --tag restic-docker-appdata # Add tags, whatever you need to mark backups
         --verbose
+        --exclude /mnt/volumes/plex # Exclude Plex folder from backup
       RESTIC_FORGET_ARGS: >-
-        --keep-last 10
-        --keep-daily 7
-        --keep-weekly 5
-        --keep-monthly 12
+        --keep-last 5        # Reduce recent snapshots
+        --keep-daily 3       # Fewer daily backups
+        --keep-weekly 3      # Fewer weekly backups
+        --keep-monthly 6     # Fewer monthly backups
       TZ: America/Vancouver
     volumes:
-      - /mnt/user/backups:/restic # Store backups in the new backups share
-      - /mnt/user/backups/tmp-for-restore:/tmp-for-restore # Folder for restores
-      - /mnt/user/appdata/docker:/mnt/volumes:ro # Read-only mount for Docker data
-      - /mnt/user/appdata/minecraft:/mnt/volumes # using minecraft for testing
+      - /mnt/disks/2K1920038014:/restic # Store backups in the new backups share
+      - /mnt/disks/2K1920038014/tmp-for-restore:/tmp-for-restore # Folder for restores
+      #- /mnt/user/appdata/docker:/mnt/volumes:ro # Read-only mount for Docker data
+      - /mnt/user/appdata/:/mnt/volumes:ro # backup all of appdata
     security_opt:
       - no-new-privileges:true
+    networks:
+      - jarvis
 
   prune:
     image: mazzolino/restic
@@ -41,6 +44,8 @@ services:
       TZ: America/Vancouver
     security_opt:
       - no-new-privileges:true
+    networks:
+      - jarvis
 
   check:
     image: mazzolino/restic
@@ -56,3 +61,9 @@ services:
       TZ: America/Vancouver
     security_opt:
       - no-new-privileges:true
+    networks:
+      - jarvis
+      
+networks:
+  jarvis:
+    external: true
