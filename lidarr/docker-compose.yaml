@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  lidarr:
+    container_name: lidarr-portainer
+    image: lscr.io/linuxserver/lidarr:latest
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: "tcp://172.22.0.2:514"  # SC4S IP and port
+        syslog-facility: "user"  # You can specify the log facility
+        tag: "docker/{{.Name}}"  # Optional: Tag your logs with container name
+    environment:
+      - PUID=99  # Adjust to match your user ID
+      - PGID=100  # Adjust to match your group ID
+      - TZ=America/Vancouver  # Replace with your timezone
+    volumes:
+      - /mnt/user/appdata/lidarr:/config  # Adjust the path if needed
+      - /mnt/user/data:/data  # Path to your music files
+    ports:
+      - 8686:8686  # Lidarr Web UI port
+    restart: unless-stopped
+    networks:
+      - jarvis  # Using the custom "jarvis" network
+networks:
+  jarvis:
+    external: true  # Refers to an existing network created in Unraid

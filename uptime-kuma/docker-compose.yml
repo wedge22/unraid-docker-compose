@@ -3,6 +3,12 @@ version: '3.8'
 services:
   uptime-kuma:
     image: louislam/uptime-kuma:latest
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: ${SYSLOG_ADDRESS}  # SC4S IP and port
+        syslog-facility: "user"  # You can specify the log facility
+        tag: "docker/{{.Name}}"  # Optional: Tag your logs with container name
     container_name: uptime-kuma
     ports:
       - "3001:3001"  # Change this port if needed

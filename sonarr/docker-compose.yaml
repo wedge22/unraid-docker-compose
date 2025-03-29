@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest  # Use the appropriate image
+    ports:
+      - "8989:8989"  # Map the ports as needed
+    volumes:
+      - "/mnt/user/appdata/sonarr:/config"  # Map the volumes as needed
+      - "/mnt/user/data:/data"  # Example additional volume
+    environment:
+      - PUID=99  # Add environment variables as needed
+      - PGID=100
+      - TZ=America/Vancouver
+    restart: unless-stopped  # Set the restart policy
+    networks:
+      - jarvis  # Optional, if using a custom network
+
+networks:
+  jarvis:
+    driver: bridge
