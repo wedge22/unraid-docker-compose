@@ -12,6 +12,8 @@ services:
       NVIDIA_VISIBLE_DEVICES: all
     runtime: nvidia
     restart: unless-stopped
+    networks:
+      - jarvis  # Using the custom "jarvis" network
 
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
@@ -33,7 +35,13 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
+    networks:
+      - jarvis  # Using the custom "jarvis" network
 
 volumes:
   ollama:
   open-webui:
+  
+networks:
+  jarvis:
+    external: true  # Refers to an existing network created in Unraid
